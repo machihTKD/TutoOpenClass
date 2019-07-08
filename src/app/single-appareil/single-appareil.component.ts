@@ -9,11 +9,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SingleAppareilComponent implements OnInit {
 
-  name: string ='';
-  status: string = '';
+  name: string ='Appareil';
+  status: string = 'Statut';
 
   constructor(private appareilService : AppareilService, 
-              private route :ActivatedRoute) { }
+              private route : ActivatedRoute) { }
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
