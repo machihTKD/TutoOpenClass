@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { promise } from 'protractor';
 import { resolve, reject } from 'q';
 import { AppareilService } from '../Services/appareil.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-appareil-view',
@@ -25,6 +26,7 @@ export class AppareilViewComponent implements OnInit {
   )
 
     appareils: any[];
+    appareilSubscription:Subscription
   
   constructor (private appareilService : AppareilService) {
     setTimeout(
@@ -33,8 +35,13 @@ export class AppareilViewComponent implements OnInit {
       }, 4000
     );
   }
-  ngOnInit(){
-    this.appareils = this.appareilService.appareils;
+  ngOnInit() {
+    this.appareilSubscription = this.appareilService.appareilSubject.subscribe(
+      (appareils:any[]) => {
+        this.appareils = appareils;
+      }
+    );
+    this.appareilService.emitAppareilSubject();
   }
 
   //Méthode pour le btn allumé 
@@ -44,4 +51,11 @@ export class AppareilViewComponent implements OnInit {
   onEteindre(){
     this.appareilService.switchOffAll();
   }
+  onSave() {
+    this.appareilService.saveAppareilstoServer();
+  }
+
+  onFetch() {
+    this.appareilService.getAppareilsFromServer();
+}
 }
